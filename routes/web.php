@@ -22,3 +22,6 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
 });
+Route::get('/{any}', function () {  
+    return Inertia::render('Welcome');  
+})-, '.*'); 
