@@ -7,9 +7,6 @@ export default defineConfig({
         laravel({ 
             input: 'resources/js/app.js', 
             refresh: true, 
-            preview: { 
-                allowedHosts: ['gdpr-checklist-app.onrender.com'] 
-            }, 
         }), 
         vue({ 
             template: { 
@@ -20,4 +17,10 @@ export default defineConfig({
             }, 
         }), 
     ], 
+    server: { 
+        origin: 'https://gdpr-checklist-app.onrender.com' 
+    }, 
+    preview: { 
+        allowedHosts: ['gdpr-checklist-app.onrender.com'] 
+    } 
 }); 
