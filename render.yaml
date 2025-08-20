@@ -1,0 +1,6 @@
+services:  
+  - type: web  
+    name: gdpr-checklist-app  
+    env: docker  
+    plan: starter  
+    region: frankfurt 
