@@ -24,4 +24,5 @@ COPY nginx/default.conf /etc/nginx/sites-available/default
   
 EXPOSE 80  
   
-CMD [\"supervisord\", \"-c\", \"/etc/supervisor/conf.d/supervisord.conf\"] 
+# Avvia supervisord  
+CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"] 
