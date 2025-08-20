@@ -3,4 +3,5 @@ services:
     name: gdpr-checklist-app  
     env: docker  
     plan: starter  
-    region: frankfurt 
+    region: frankfurt  
+    dockerfilePath: ./Dockerfile 
