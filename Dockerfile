@@ -32,16 +32,13 @@ RUN echo "error_reporting = E_ALL"
 RUN cp .env.render .env  
   
 # Installa le dipendenze PHP  
-RUN composer install --no-dev --optimize-autoloader --no-scripts  
+RUN composer install --no-dev --optimize-autoloader  
   
 # Installa le dipendenze Node.js e builda gli asset  
 RUN npm install --legacy-peer-deps && npm run build  
   
 # Genera la chiave dell'applicazione  
 RUN php artisan key:generate --force  
-  
-# Esegui gli script di post-installazione di Composer  
-RUN composer run-script post-install-cmd  
   
 # Ottimizza Laravel  
 RUN php artisan config:cache  
