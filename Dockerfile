@@ -36,11 +36,17 @@ RUN echo "display_errors = Off"
 RUN echo "display_startup_errors = Off"  
 RUN echo "error_reporting = E_ALL"  
   
+# Copia il file .env.render come .env  
+RUN cp .env.render .env  
+  
 # Installa le dipendenze PHP  
 RUN composer install --no-dev --optimize-autoloader  
   
 # Installa le dipendenze Node.js e builda gli asset  
 RUN npm install --legacy-peer-deps && npm run build  
+  
+# Genera la chiave dell'applicazione  
+RUN php artisan key:generate --force  
   
 # Ottimizza Laravel  
 RUN php artisan config:cache  
