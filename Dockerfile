@@ -1,4 +1,4 @@
-FROM richarvey/nginx-php-fpm:latest 
+FROM richarvey/nginx-php-fpm:latest  
   
 # Installa Node.js e npm  
 RUN apk add --no-cache nodejs npm  
@@ -14,6 +14,9 @@ COPY php-fpm/php-fpm.conf /usr/local/etc/php-fpm.d/www.conf
   
 WORKDIR /var/www/html  
   
+# Crea directory necessarie  
+RUN mkdir -p /var/run/php-fpm  
+  
 # Installa le dipendenze PHP  
 RUN composer install --no-dev --optimize-autoloader  
   
@@ -25,6 +28,7 @@ RUN mkdir -p storage/logs storage/framework/cache storage/framework/sessions sto
   
 # Imposta i permessi corretti  
 RUN chmod -R 775 storage bootstrap/cache  
+RUN chown -R www-data:www-data /var/run/php-fpm  
   
 # Crea i link simbolici per i log  
 RUN ln -sf /dev/stdout /var/log/access.log  
