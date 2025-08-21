@@ -1,19 +1,11 @@
 FROM richarvey/nginx-php-fpm:latest  
   
-# Installa Node.js e npm  
-RUN apk add --no-cache nodejs npm  
+# Installa Node.js, npm e Composer  
+RUN apk add --no-cache nodejs npm curl  
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer  
   
 # Copia i file dell'applicazione  
 COPY . /var/www/html/  
-  
-# Copia il file di configurazione di Supervisor  
-COPY supervisor/supervisord.conf /etc/supervisord.conf  
-  
-# Copia il file di configurazione di PHP-FPM  
-COPY php-fpm/php-fpm.conf /usr/local/etc/php-fpm.d/www.conf  
-  
-# Copia il file di configurazione di nginx  
-COPY nginx/default.conf /etc/nginx/sites-enabled/default.conf  
   
 WORKDIR /var/www/html  
   
@@ -31,7 +23,7 @@ RUN ln -sf /dev/stderr /var/log/php-fpm-error.log
   
 # Imposta il livello di log di PHP  
 RUN echo "log_errors = On"  
-RUN echo "error_log = /var/log/php-error.log"  
+RUN echo "error_log = /dev/stderr"  
 RUN echo "display_errors = Off"  
 RUN echo "display_startup_errors = Off"  
 RUN echo "error_reporting = E_ALL"  
@@ -40,18 +32,16 @@ RUN echo "error_reporting = E_ALL"
 RUN cp .env.render .env  
   
 # Installa le dipendenze PHP  
-RUN composer install --no-dev --optimize-autoloader  
-  
-# Debug: Verifica che le dipendenze siano state installate correttamente  
-RUN ls -la /var/www/html/vendor/  
-RUN ls -la /var/www/html/vendor/autoload.php  
-RUN ls -la /var/www/html/vendor/laravel/  
+RUN composer install --no-dev --optimize-autoloader --no-scripts  
   
 # Installa le dipendenze Node.js e builda gli asset  
 RUN npm install --legacy-peer-deps && npm run build  
   
 # Genera la chiave dell'applicazione  
 RUN php artisan key:generate --force  
+  
+# Esegui gli script di post-installazione di Composer  
+RUN composer run-script post-install-cmd  
   
 # Ottimizza Laravel  
 RUN php artisan config:cache  
