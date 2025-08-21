@@ -1,11 +1,11 @@
 <?php  
 header('Content-Type: application/json');  
   
-// Debug delle variabili d'ambiente  
-$dbHost = env('DB_HOST', 'NOT SET');  
-$dbDatabase = env('DB_DATABASE', 'NOT SET');  
-$dbUsername = env('DB_USERNAME', 'NOT SET');  
-$dbPassword = env('DB_PASSWORD', 'NOT SET') ? 'SET' : 'NOT SET';  
+// Debug delle variabili d'ambiente usando funzioni PHP standard  
+$dbHost = getenv('DB_HOST') ?: 'NOT SET';  
+$dbDatabase = getenv('DB_DATABASE') ?: 'NOT SET';  
+$dbUsername = getenv('DB_USERNAME') ?: 'NOT SET';  
+$dbPassword = getenv('DB_PASSWORD') ? 'SET' : 'NOT SET';  
   
 try {  
     // Carica l'autoloader di Composer  
