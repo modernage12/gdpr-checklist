@@ -15,25 +15,22 @@ COPY php-fpm/php-fpm.conf /usr/local/etc/php-fpm.d/www.conf
 WORKDIR /var/www/html  
   
 # Crea directory necessarie  
-RUN mkdir -p /var/run/php-fpm  
+RUN mkdir -p storage/logs storage/framework/cache storage/framework/sessions storage/framework/views bootstrap/cache  
+  
+# Imposta i permessi corretti  
+RUN chmod -R 775 storage bootstrap/cache  
+RUN chown -R www-data:www-data storage bootstrap/cache  
+  
+# Crea i link simbolici per i log  
+RUN ln -sf /dev/stdout /var/log/access.log  
+RUN ln -sf /dev/stderr /var/log/error.log  
+RUN ln -sf /dev/stderr /var/log/php-fpm-error.log  
   
 # Installa le dipendenze PHP  
 RUN composer install --no-dev --optimize-autoloader  
   
 # Installa le dipendenze Node.js e builda gli asset  
 RUN npm install --legacy-peer-deps && npm run build  
-  
-# Crea directory di storage e bootstrap/cache se non esistono  
-RUN mkdir -p storage/logs storage/framework/cache storage/framework/sessions storage/framework/views bootstrap/cache  
-  
-# Imposta i permessi corretti  
-RUN chmod -R 775 storage bootstrap/cache  
-RUN chown -R www-data:www-data /var/run/php-fpm  
-  
-# Crea i link simbolici per i log  
-RUN ln -sf /dev/stdout /var/log/access.log  
-RUN ln -sf /dev/stderr /var/log/error.log  
-RUN ln -sf /dev/stderr /var/log/php-fpm-error.log  
   
 # Ottimizza Laravel  
 RUN php artisan config:cache  
