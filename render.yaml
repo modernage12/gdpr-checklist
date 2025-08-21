@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: gdpr-checklist
+    env: docker
+    region: frankfurt  # Deploy in Frankfurt, EU
+    plan: free         # Start with free plan, upgrade as needed
+    dockerfilePath: Dockerfile
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_KEY
+        sync: false  # This will need to be set manually in Render dashboard
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_HOST
+        sync: false  # This will be set by Render when you add a PostgreSQL database
+      - key: DB_PORT
+        value: 5432
+      - key: DB_DATABASE
+        sync: false  # This will be set by Render when you add a PostgreSQL database
+      - key: DB_USERNAME
+        sync: false  # This will be set by Render when you add a PostgreSQL database
+      - key: DB_PASSWORD
+        sync: false  # This will be set by Render when you add a PostgreSQL database

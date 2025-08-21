@@ -1,0 +1,17 @@
+/node_modules
+/npm-debug.log
+/resources/js
+/resources/css
+/tailwind.config.js
+/webpack.mix.js
+/composer.lock
+/.env
+/.env.example
+/.git
+/.gitattributes
+/.gitignore
+/.phpunit.result.cache
+/.php_cs.cache
+/.styleci.yml
+/docker-compose.yml
+/docker-compose.local.yml
