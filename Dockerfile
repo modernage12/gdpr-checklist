@@ -9,6 +9,9 @@ COPY . /var/www/html/
 # Copia il file di configurazione di Supervisor  
 COPY supervisor/supervisord.conf /etc/supervisord.conf  
   
+# Copia il file di configurazione di PHP-FPM  
+COPY php-fpm/php-fpm.conf /usr/local/etc/php-fpm.d/www.conf  
+  
 WORKDIR /var/www/html  
   
 # Installa le dipendenze PHP  
@@ -26,6 +29,7 @@ RUN chmod -R 775 storage bootstrap/cache
 # Crea i link simbolici per i log  
 RUN ln -sf /dev/stdout /var/log/access.log  
 RUN ln -sf /dev/stderr /var/log/error.log  
+RUN ln -sf /dev/stderr /var/log/php-fpm-error.log  
   
 # Ottimizza Laravel  
 RUN php artisan config:cache  
