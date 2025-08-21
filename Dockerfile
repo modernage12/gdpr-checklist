@@ -42,6 +42,11 @@ RUN cp .env.render .env
 # Installa le dipendenze PHP  
 RUN composer install --no-dev --optimize-autoloader  
   
+# Debug: Verifica che le dipendenze siano state installate correttamente  
+RUN ls -la /var/www/html/vendor/  
+RUN ls -la /var/www/html/vendor/autoload.php  
+RUN ls -la /var/www/html/vendor/laravel/  
+  
 # Installa le dipendenze Node.js e builda gli asset  
 RUN npm install --legacy-peer-deps && npm run build  
   
