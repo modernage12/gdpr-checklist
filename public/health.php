@@ -13,7 +13,7 @@ try {
         // Questo controllerà solo se le variabili di ambiente sono impostate  
         $dbConnection = true;  
     } catch (Exception $e) {  
-        $dbError = $e->getMessage();  
+        $dbError = $e- 
     }  
   
     echo json_encode([  
@@ -32,3 +32,4 @@ try {
         'file' => $e->getFile(),  
         'line' => $e->getLine()  
     ]);  
+} 
