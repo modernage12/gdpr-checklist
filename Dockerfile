@@ -12,6 +12,9 @@ COPY supervisor/supervisord.conf /etc/supervisord.conf
 # Copia il file di configurazione di PHP-FPM  
 COPY php-fpm/php-fpm.conf /usr/local/etc/php-fpm.d/www.conf  
   
+# Copia il file di configurazione di nginx  
+COPY nginx/default.conf /etc/nginx/sites-enabled/default.conf  
+  
 WORKDIR /var/www/html  
   
 # Crea directory necessarie  
