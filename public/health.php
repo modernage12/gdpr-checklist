@@ -11,8 +11,11 @@ try {
     // Crea una richiesta di prova  
     $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);  
   
-    $response = array('status' => 'OK', 'timestamp' => date('c'), 'laravel' => 'loaded');  
-    echo json_encode($response);  
+    $request = Illuminate\Http\Request::capture();  
+    $response = $kernel->handle($request);  
+  
+    $result = array('status' => 'OK', 'timestamp' => date('c'), 'laravel' => 'loaded', 'request_handled' => true, 'response_status' => $response->status());  
+    echo json_encode($result);  
 } catch (Exception $e) {  
     http_response_code(500);  
     $error = array('status' => 'ERROR', 'message' => $e->getMessage(), 'file' => $e->getFile(), 'line' => $e->getLine());  
