@@ -47,8 +47,16 @@ RUN php artisan config:cache
 RUN php artisan route:cache  
 RUN php artisan view:cache  
   
-# Crea un health check endpoint  
-RUN echo "<?php http_response_code(200); echo 'OK';" > public/health.php  
+# Crea un health check endpoint dettagliato  
+RUN echo "<?php" > public/health.php  
+RUN echo "header('Content-Type: application/json');" >> public/health.php  
+RUN echo "try {" >> public/health.php  
+RUN echo "    require_once __DIR__.'/../vendor/autoload.php';" >> public/health.php  
+RUN echo "    echo json_encode(['status' =^> 'OK', 'timestamp' =^> date('c')]);" >> public/health.php  
+RUN echo "} catch (Exception $e) {" >> public/health.php  
+RUN echo "    http_response_code(500);" >> public/health.php  
+RUN echo "    echo json_encode(['status' =^> 'ERROR', 'message' =^> $e->getMessage()]);" >> public/health.php  
+RUN echo "}" >> public/health.php  
   
 EXPOSE 80  
   
