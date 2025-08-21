@@ -19,10 +19,7 @@ RUN php artisan config:cache
 RUN php artisan route:cache  
 RUN php artisan view:cache  
   
-# Copia la configurazione Nginx personalizzata  
-COPY nginx/default.conf /etc/nginx/sites-available/default  
-  
 EXPOSE 80  
   
 # Avvia supervisord  
-CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"] 
+CMD ["supervisord"] 
