@@ -29,6 +29,13 @@ RUN ln -sf /dev/stdout /var/log/access.log
 RUN ln -sf /dev/stderr /var/log/error.log  
 RUN ln -sf /dev/stderr /var/log/php-fpm-error.log  
   
+# Imposta il livello di log di PHP  
+RUN echo "log_errors = On"  
+RUN echo "error_log = /var/log/php-error.log"  
+RUN echo "display_errors = Off"  
+RUN echo "display_startup_errors = Off"  
+RUN echo "error_reporting = E_ALL"  
+  
 # Installa le dipendenze PHP  
 RUN composer install --no-dev --optimize-autoloader  
   
