@@ -1,10 +1,13 @@
 FROM richarvey/nginx-php-fpm:latest 
   
 # Installa Node.js e npm  
-RUN apk add --no-cache nodejs npm 
+RUN apk add --no-cache nodejs npm  
   
 # Copia i file dell'applicazione  
-COPY . /var/www/html/ 
+COPY . /var/www/html/  
+  
+# Copia il file di configurazione di Supervisor  
+COPY supervisor/supervisord.conf /etc/supervisord.conf  
   
 WORKDIR /var/www/html  
   
@@ -20,6 +23,10 @@ RUN mkdir -p storage/logs storage/framework/cache storage/framework/sessions sto
 # Imposta i permessi corretti  
 RUN chmod -R 775 storage bootstrap/cache  
   
+# Crea i link simbolici per i log  
+RUN ln -sf /dev/stdout /var/log/access.log  
+RUN ln -sf /dev/stderr /var/log/error.log  
+  
 # Ottimizza Laravel  
 RUN php artisan config:cache  
 RUN php artisan route:cache  
@@ -30,5 +37,5 @@ RUN echo "<?php http_response_code(200); echo 'OK';" > public/health.php
   
 EXPOSE 80  
   
-# Avvia supervisord  
-CMD ["supervisord"] 
+# Avvia supervisord con il file di configurazione personalizzato  
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"] 
